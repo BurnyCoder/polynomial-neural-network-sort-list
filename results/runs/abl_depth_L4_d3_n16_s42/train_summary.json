@@ -1,0 +1,13 @@
+{
+  "run_id": "abl_depth_L4_d3_n16_s42",
+  "model_name": "polysort_custom",
+  "n": 16,
+  "seed": 42,
+  "n_params": 40,
+  "epochs_completed": 50,
+  "best_val_mae": 0.016294626519083977,
+  "best_val_mono_rate": 0.8147000074386597,
+  "best_val_pair_acc": 0.9980266690254211,
+  "diverged": false,
+  "train_seconds": 139.00494769999932
+}

@@ -54,3 +54,19 @@ This living log documents every key insight gained from the literature review, m
    - *Fix:* Switched compact structured networks (`PolySortNet`, `PolyPairwiseRank`, `DiffSort`) to `batch_size=4096, lr=8e-3, epochs=50` (~49 batches/epoch, ~8× faster) and dense networks to `batch_size=2048, lr=2e-3, epochs=60`, while retaining `batch_size=512 vs 2048 vs 4096` explicitly in the Stage 4E sensitivity sweep to verify invariance.
 
 
+
+---
+
+## Learnings from Stage 4C & Stage 4D (Baselines & Causal Ablations)
+
+9. **Unconstrained Polynomials Exploit Late-Stage Domain Contraction (H6 Part 1 Falsified on ID MAE):**
+   - Freeing $h_k(1) \neq 1$ (`unconstrained_odd_cheby`, `raw_monomial`, `general_cheby`) cuts ID MAE by ~26–30% (`0.0234 / 0.0273` vs `0.0333 / 0.0369`) because late Bitonic stages only receive small $|\Delta| \lesssim 0.4$; unconstrained polynomials contract their valid domain to sharpen origin slope (`9.58 -> 14.3`), letting `s_5(1.0)` diverge to `-444..-1038` and shrinking `R_stable` from `1.3 -> 1.1`. Fixed-point anchoring is thus a **scale-stability regularizer**, not an ID-MAE maximizer.
+
+10. **Iso-Degree vs. Iso-Parameter Separation & Optimal Depth-vs-Width Frontier (H3 Refined):**
+    - Flat degree 9 (`L=1, d=9`, 4 params/stage) beats composite degree 9 (`L=2, d=3`, 2 params/stage) on ID MAE (`0.0566` vs `0.0771`), falsifying H3 Part 1 at strict iso-degree $D=9$, yet exhibits Runge boundary blow-up (`R_stable = 0.00`). At **equal parameter budget (4 params/stage)**, composite **`L=4, d=3` (degree 81)** achieves `$4.28\times$` lower MAE (`0.0132 / 0.0163`), `91.8% / 61.4%` Ex@0.05, AND widens `R_stable` to **`1.50`** — strictly superior in stability to quintic `L=3, m=2` (`R_stable = 1.00`).
+
+11. **Shift vs. Scale Symmetry Trade-Off in Non-Polynomial Normalization (A6):**
+    - Wrapping `PolySortNet` in `x / max(|x|)` lifts `R_stable` from `1.30 -> 5.00` (proving H5 causally), while breaking Shift $+100$ equivariance (`0.0334 -> 0.4553`) because uncentered scaling compresses pairwise differences by $101\times$.
+
+12. **Topology-Dependent Reversal Asymmetry (A4):**
+    - Batcher Odd-Even Merge improves MAE by 10–13% over Bitonic and preserves exact sorted/reversed symmetry (`EdgeS == EdgeR`), while Habermann Odd-Even Transposition achieves the highest monotonicity (`99.30% / 96.77%`) at the cost of $2.74\times$ higher error on reversed inputs at $n=16$ (`0.1349` vs `0.0493`).

@@ -1,0 +1,13 @@
+{
+  "run_id": "abl_wire_oddeven_trans_n8_s42",
+  "model_name": "polysort_custom",
+  "n": 8,
+  "seed": 42,
+  "n_params": 24,
+  "epochs_completed": 50,
+  "best_val_mae": 0.038482390344142914,
+  "best_val_mono_rate": 0.9936999678611755,
+  "best_val_pair_acc": 0.999407172203064,
+  "diverged": false,
+  "train_seconds": 87.79448469999988
+}

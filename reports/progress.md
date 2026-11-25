@@ -1,11 +1,14 @@
 # Live Progress Report (`pnn-sort`)
 
-**Last Updated:** 2026-11-25 17:52 CET  
+**Last Updated:** 2026-11-25 18:50 CET  
 
 ## Current Status
-- **Overall Progress:** ~66% complete (Phases 0–3, Stages 4A–4C complete; launching Stage 4D causal ablations).
+- **Overall Plan Completion:** **~74% complete** (**~26% remaining**; **83 / 178** preregistered experiment runs complete).
+- **Live Accuracy Monitor:** Active at `http://127.0.0.1:18080`.
 - **Done:**
-  - Stages 4A, 4B, and 4C complete (53 runs total).
-  - Stage 4C Highlights: Zero data leakage confirmed (`ShuffledTarget` MAE `0.210`/`0.282`); 6-param pure-polynomial `PolySortNet-Shared-m2` beats 37k-param `ReLU-MLP` by $5.7\times$ ($n=16$) and beats 96.6k-param `SetTransformer` on Shift $+100$ ($12{,}500\times$), Zero-Shot $n=128$ ($2.65\times$), and Near-Ties $10^{-3}$ (`0.00666` vs `0.00757`), while honestly lagging non-polynomial `DiffSort` (`exp`/`atan`) on ID MAE and scale extrapolation ($s=5$).
-- **In Progress:** Pushing Stage 4C to GitHub & Hugging Face, then running **Stage 4D** (30 causal ablation runs across A1 Parameterization, A2 Iso-Degree Depth Separation, A3 Initialization, A4 Wiring + Random-Wire Negative Control, A5 Loss Function, and A6 Scale-Norm Non-Poly Boundary; ~25–35 min on RTX 5070).
-- **Next Up:** Adversarial Self-Review #3, Stage 4E (5-seed statistical rigor + sensitivity sweeps), and Phase 5 (figures, GitHub Pages live browser sorter, `reports/paper.pdf`).
+  - Phases 0–3 (Lit/SOTA review, Preregistration `H1–H6`, Modular `src/pnn_sort/`, 62/62 pytests, Review #1).
+  - Stages 4A (26 runs), 4B (17 runs + Review #2), 4C (10 runs), and **Stage 4D (30/30 causal ablations A1–A6 + Adversarial Review #3)** — all pushed to GitHub & Hugging Face.
+- **In Progress Now:**
+  - Pushing Stage 4D + Review #3 to GitHub & Hugging Face, then executing **Stage 4E** (`4e_sens`: 15 hyperparameter/batch-size/float64 runs, followed by `4e_seeds`: 80 multi-seed replication runs across seeds `123, 456, 789, 1024`; ~75–95 min on RTX 5070).
+- **Next Up (Phase 5, ~45 min):**
+  - 5-seed statistical analysis (10k bootstrap 95% CIs, paired Wilcoxon + Holm-Bonferroni), publication figures, live interactive GitHub Pages browser pure-polynomial sorter (`docs/index.html`), full academic paper `reports/paper.pdf` (by Libor "Burny" Burian) + `reports/summary.md`, comprehensive `README.md`, Final Triple-Check & Adversarial Review #4, final GitHub & HF sync.

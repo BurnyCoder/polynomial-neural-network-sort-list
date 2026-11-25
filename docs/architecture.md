@@ -1,6 +1,6 @@
 # Architecture Documentation (`pnn-sort`)
 
-This document describes the modular software and mathematical architecture of `pnn-sort`.
+This document describes the modular software and mathematical architecture of `pnn-sort`. For a complete side-by-side mathematical derivation comparing `PolySortNet` and other pure PNNs against classic neural networks (`ReLU`/`GELU` MLPs and `DiffSort`) with worked plugged-in numerical examples, see [`pnn-vs-classic-nn-math.md`](pnn-vs-classic-nn-math.md).
 
 ## 1. Software Pipeline Flow
 

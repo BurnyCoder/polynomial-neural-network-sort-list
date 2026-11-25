@@ -1,0 +1,13 @@
+{
+  "run_id": "abl_param_raw_monomial_n8_s42",
+  "model_name": "polysort_custom",
+  "n": 8,
+  "seed": 42,
+  "n_params": 36,
+  "epochs_completed": 50,
+  "best_val_mae": 0.023770105093717575,
+  "best_val_mono_rate": 0.9408999681472778,
+  "best_val_pair_acc": 0.9974678754806519,
+  "diverged": false,
+  "train_seconds": 76.74787070000093
+}

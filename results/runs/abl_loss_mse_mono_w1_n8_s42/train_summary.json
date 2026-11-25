@@ -1,0 +1,13 @@
+{
+  "run_id": "abl_loss_mse_mono_w1_n8_s42",
+  "model_name": "polysort_adaptive",
+  "n": 8,
+  "seed": 42,
+  "n_params": 18,
+  "epochs_completed": 50,
+  "best_val_mae": 0.03222622722387314,
+  "best_val_mono_rate": 0.9368000030517578,
+  "best_val_pair_acc": 0.9972392916679382,
+  "diverged": false,
+  "train_seconds": 77.40040180000142
+}

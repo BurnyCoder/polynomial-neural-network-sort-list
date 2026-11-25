@@ -3,7 +3,8 @@
 > **Status:** Stage 4A Complete (Primary `PolySortNet` + Analytical CKKS Controls) — Stage 4B Running (2026-11-25). Highlight: 6-parameter strictly pure `PolySortNet-Shared (d=5)` reaches **`0.0079` MAE** on $n=8$ and generalizes **zero-shot $16\times$ to $n=128$** (`0.0200` MAE, $\tau=0.9978$); 36-parameter `PolySortNet-StageAdaptive (d=5)` reaches **`0.0072` MAE** ($n=8$, Mono `95.92%`) and **`0.0097` MAE** ($n=16$) — **$3.85\times$ lower MAE** than Cheon/Hong/Mazzone mixed $f_3 \circ g_3$. See [Stage 4A Report](reports/experiments/stage-4a-controls-and-main/experiment.md).
 
 **Author:** Libor "Burny" Burian  
-**Primary Reports:** [Literature Review](reports/literature-review.md) · [SOTA Review](reports/state-of-the-art-review.md) · [Preregistration (Pre-Results)](reports/preregistration.md) · [Planned Run Matrix](reports/planned-runs.md) · [Live Progress](reports/progress.md)
+**Primary Reports:** [Literature Review](reports/literature-review.md) · [SOTA Review](reports/state-of-the-art-review.md) · [Preregistration (Pre-Results)](reports/preregistration.md) · [Planned Run Matrix](reports/planned-runs.md) · [Live Progress](reports/progress.md)  
+**Documentation:** [Architecture](docs/architecture.md) · [PNN vs. Classic NN Math & Worked Comparison](docs/pnn-vs-classic-nn-math.md) · [Methodology](docs/methodology.md)
 
 ---
 
