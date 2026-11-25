@@ -1,0 +1,13 @@
+{
+  "run_id": "ctrl_shuffled_n16_s42",
+  "model_name": "polysort_adaptive",
+  "n": 16,
+  "seed": 42,
+  "n_params": 30,
+  "epochs_completed": 25,
+  "best_val_mae": 0.2818412482738495,
+  "best_val_mono_rate": 0.7975999712944031,
+  "best_val_pair_acc": 0.9974841475486755,
+  "diverged": false,
+  "train_seconds": 52.559083199997986
+}

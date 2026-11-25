@@ -14,7 +14,7 @@ Train, rigorously evaluate, ablate, visualize, and publish a scientific study of
 - [x] **Phase 3:** Modular `src/pnn_sort/` package, automated FX purity audit, real-time accuracy web dashboard, full `pytest` suite (62/62 passed), pre-training push & Adversarial Self-Review #1.
 - [x] **Phase 4A:** Zero-training analytical/controls + primary `PolySortNet` (Shared & Stage-Adaptive), incremental GitHub & HF pushes.
 - [x] **Phase 4B:** Remaining main PNN architectures (`PolyPairwiseRank`, `PolySortNetLearnedWire`, `DeepSetsPoly`, `PiNetSorter`, `PolyMLP`) + scaling study ($n=4..128$), Review #2.
-- [ ] **Phase 4C:** Trained controls (`ShuffledTargetControl`) & non-polynomial baselines (`DiffSort`, `ReLU-MLP`, `SetTransformer`).
+- [x] **Phase 4C:** Trained controls (`ShuffledTargetControl`) & non-polynomial baselines (`DiffSort`, `ReLU-MLP`, `SetTransformer`).
 - [ ] **Phase 4D:** 6 causal ablation suites + Adversarial NeurIPS Self-Review #3.
 - [ ] **Phase 4E:** 5-seed statistical rigor + hyperparameter sensitivity sweep + float64 precision audit.
 - [ ] **Phase 5:** Publication visualizations, GitHub Pages live browser polynomial sorter, full scientific paper (`reports/paper.pdf`, `reports/summary.md`), Final Triple-Check & Adversarial Review #4, final GitHub + HF sync.
