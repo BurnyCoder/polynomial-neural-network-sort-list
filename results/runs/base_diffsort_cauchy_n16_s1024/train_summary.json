@@ -1,0 +1,13 @@
+{
+  "run_id": "base_diffsort_cauchy_n16_s1024",
+  "model_name": "diffsort_cauchy",
+  "n": 16,
+  "seed": 1024,
+  "n_params": 1,
+  "epochs_completed": 50,
+  "best_val_mae": 0.004235345404595137,
+  "best_val_mono_rate": 0.9990999698638916,
+  "best_val_pair_acc": 0.9999924898147583,
+  "diverged": false,
+  "train_seconds": 62.34151930000007
+}

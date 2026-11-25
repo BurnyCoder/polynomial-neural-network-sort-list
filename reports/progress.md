@@ -1,19 +1,17 @@
 # Live Progress Report (`pnn-sort`)
 
-**Last Updated:** 2026-11-25 19:17 CET  
+**Last Updated:** 2026-11-25 21:53 CET  
 
-## Current Status
-- **Overall Plan Completion:** **~78% complete** (**~22% remaining**; **98 / 178** preregistered experiment runs complete).
-- **Live Accuracy Monitor:** Active at `http://127.0.0.1:18080`.
-- **Done:**
-  - Phases 0–3 (Lit/SOTA review, Preregistration `H1–H6`, Modular `src/pnn_sort/`, 62/62 pytests, Review #1).
-  - Stages 4A (26 runs), 4B (17 runs + Review #2), 4C (10 runs), Stage 4D (30 causal ablations + Review #3).
-  - **Stage 4E Sensitivity Sweeps (`4e_sens`, 15/15 runs DONE):**
-    - `float64` training matches `float32` to **6 decimal places** on both `L=3` (`0.033254`) and degree-81 `L=4` (`0.013222`), ruling out precision drift.
-    - Weight-decay invariant (`wd=0`: `0.033254` vs `wd=0.01`: `0.033258`); batch-size audit confirms `bs=4096` (`0.03327`) is slightly conservative vs `bs=512` (`0.03165`).
-    - Fair LR audit shows `PiNet-NCP-Skip` improves to `0.04232` at `lr=0.01` (still $5.85\times$ behind 36-param `PolySortNet-Adaptive-m2`).
-  - Phase 5 scaffolding built & verified early: `aggregate.py`, `build_paper_assets.py` (6 polished figures), and interactive browser pure-polynomial sorter `docs/index.html` (verified `0.00e+00` bit-exact float64 parity vs PyTorch across all 8 exported models!).
-- **In Progress Now:**
-  - Pushing `4e_sens` + Phase 5 web/viz scaffolding to GitHub & Hugging Face, then executing **`4e_seeds`** (**80 runs**: 10 core models $\times$ $n \in \{8, 16\}$ $\times$ 4 remaining seeds `123, 456, 789, 1024`, with mid-stage GitHub/HF push after the 40 $n=8$ runs; ~80–100 min total on RTX 5070).
-- **Next Up (Final Phase 5, ~35–45 min):**
-  - Re-run `aggregate.py` & `build_paper_assets.py` on all 178 runs (final 5-seed `mean ± std`, 10k bootstrap 95% CIs, Holm-Bonferroni Wilcoxon tests), write `stage-4e` report, compile full academic paper `reports/paper.pdf` (by Libor "Burny" Burian) + `reports/summary.md`, update comprehensive `README.md`, enable live GitHub Pages (`docs/`), complete **Final Triple-Check & Adversarial Review #4**, final GitHub & HF push.
+## Final Status: 100% COMPLETE
+- **Overall Plan Completion:** **100% complete** (**178 / 178 preregistered experiment runs**, 62/62 passing `pytest` tests, 4/4 Adversarial Self-Reviews).
+- **Live Interactive Browser Pure-Polynomial Sorter:** [https://burnycoder.github.io/polynomial-neural-network-sort-list/](https://burnycoder.github.io/polynomial-neural-network-sort-list/) (bit-exact `0.00e+00` float64 parity vs. PyTorch across all 8 pure-polynomial models).
+- **GitHub Repository:** [https://github.com/BurnyCoder/polynomial-neural-network-sort-list](https://github.com/BurnyCoder/polynomial-neural-network-sort-list)
+- **Hugging Face Checkpoints & Paper:** [https://huggingface.co/BurnyCoder/polynomial-neural-network-sort-list](https://huggingface.co/BurnyCoder/polynomial-neural-network-sort-list)
+- **Deliverables Completed & Audited:**
+  - Verified Literature & SOTA Reviews (`reports/literature-review.md`, `reports/state-of-the-art-review.md`).
+  - Pre-Results Preregistration (`H1–H6`) & Planned Run Matrix (`reports/preregistration.md`, `reports/planned-runs.md`).
+  - Modular `src/pnn_sort/` package + PyTorch FX purity auditor + real-time accuracy dashboard + 62/62 unit tests.
+  - All 178 runs across Stages 4A, 4B, 4C, 4D (30 causal ablations), `4e_sens` (15 sensitivity/float64 runs), and `4e_seeds` (80 final multi-seed runs = 100 core 5-seed cells).
+  - Final 5-seed aggregation (`results/multiseed_summary.json`, `results/statistical_tests.json`, `results/summary_table.csv`) with 10k bootstrap 95% CIs & Holm-Bonferroni Wilcoxon tests.
+  - 6 visually audited publication figures (`reports/paper/figures/` & `docs/figures/`).
+  - Full compiled academic paper `reports/paper.pdf` (authored by Libor "Burny" Burian, 2026-11-25), `reports/summary.md`, comprehensive `README.md`, and Adversarial Self-Reviews #1–#4.

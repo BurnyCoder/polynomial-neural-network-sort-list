@@ -1,0 +1,13 @@
+{
+  "run_id": "main_pinet_ncpskip_n16_s456",
+  "model_name": "pinet_ncp_skip",
+  "n": 16,
+  "seed": 456,
+  "n_params": 205712,
+  "epochs_completed": 60,
+  "best_val_mae": 0.06250544637441635,
+  "best_val_mono_rate": 0.9890999794006348,
+  "best_val_pair_acc": 0.9997541904449463,
+  "diverged": false,
+  "train_seconds": 61.08981780000249
+}

@@ -346,7 +346,7 @@ def build_fig4_output_examples() -> None:
                 y_plot = np.clip(y_pred, ylim[0] - 0.15 * (ylim[1] - ylim[0]), ylim[1] + 0.15 * (ylim[1] - ylim[0]))
                 ax.plot(pos, y_plot, "--s", color=PALETTE[col % len(PALETTE)], lw=1.6, ms=4, zorder=4, label="Pred")
             else:
-                msg = f"COLLAPSED\n(mean {np.mean(y_pred):.1f})" if (finite and abs(np.mean(y_pred)) < 100) else "DIVERGED /\nOFF-SCALE"
+                msg = f"COLLAPSED\n(mean {np.mean(y_pred):.1f})" if (finite and np.max(np.abs(y_pred)) < 100) else "DIVERGED /\nOFF-SCALE"
                 ax.text(4.5, np.mean(ylim), msg, ha="center", va="center",
                         fontsize=8.2, fontweight="bold", color="#CC0000",
                         bbox=dict(boxstyle="round,pad=0.25", fc="#FFEAEA", ec="#CC0000"))

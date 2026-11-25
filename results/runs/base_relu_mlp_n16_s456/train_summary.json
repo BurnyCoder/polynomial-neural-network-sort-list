@@ -1,0 +1,13 @@
+{
+  "run_id": "base_relu_mlp_n16_s456",
+  "model_name": "relu_mlp",
+  "n": 16,
+  "seed": 456,
+  "n_params": 37264,
+  "epochs_completed": 60,
+  "best_val_mae": 0.06381000578403473,
+  "best_val_mono_rate": 0.9945999979972839,
+  "best_val_pair_acc": 0.99989914894104,
+  "diverged": false,
+  "train_seconds": 30.23788080000304
+}

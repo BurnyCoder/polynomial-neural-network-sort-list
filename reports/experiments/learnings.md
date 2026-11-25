@@ -70,3 +70,14 @@ This living log documents every key insight gained from the literature review, m
 
 12. **Topology-Dependent Reversal Asymmetry (A4):**
     - Batcher Odd-Even Merge improves MAE by 10–13% over Bitonic and preserves exact sorted/reversed symmetry (`EdgeS == EdgeR`), while Habermann Odd-Even Transposition achieves the highest monotonicity (`99.30% / 96.77%`) at the cost of $2.74\times$ higher error on reversed inputs at $n=16$ (`0.1349` vs `0.0493`).
+
+---
+
+## Learnings from Stage 4E (Sensitivity Sweeps & 5-Seed Statistical Rigor)
+
+13. **Zero `float32` Optimization Drift Even at Degree 81:**
+    - Full `float64` training matched `float32` to 6 decimal places on both $L=3$ (`0.033254`) and $L=4$ (`0.013222`), confirming fixed-point odd Chebyshev bounds protect single-precision gradients.
+14. **Four Orders of Magnitude Lower Seed Variance & Fair Baseline LR Audit:**
+    - Across 5 seeds (`42, 123, 456, 789, 1024`), 36-param `PolySortNet-Adaptive (m=2)` exhibits seed SD `5.8e-7` (`n=8`) vs `5.2e-3` (`PiNet`) and `2.9e-3` (`PolyMLP`). Baseline LR tuning lifted `PiNet` from `0.0529 -> 0.0423` at `lr=0.01` (reported honestly; still $5.85\times$ behind `PolySortNet-Adaptive m=2`).
+15. **Mechanistic Bitonic Stride-Reset Rediscovery (Visual Audit of Fig. 3C):**
+    - Visually inspecting our stage-adaptive slope plot revealed that gradient descent autonomously drops comparator origin slope $s'(0)$ at every fresh long-stride Bitonic merge boundary (Stage 3 for $n=8$; Stages 1, 3, 6 for $n=16$) and ramps slope monotonically as stride halves `8 -> 4 -> 2 -> 1`.

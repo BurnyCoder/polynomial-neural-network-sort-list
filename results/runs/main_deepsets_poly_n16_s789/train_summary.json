@@ -1,0 +1,13 @@
+{
+  "run_id": "main_deepsets_poly_n16_s789",
+  "model_name": "deepsets_poly",
+  "n": 16,
+  "seed": 789,
+  "n_params": 131696,
+  "epochs_completed": 60,
+  "best_val_mae": 0.041163165122270584,
+  "best_val_mono_rate": 0.9321999549865723,
+  "best_val_pair_acc": 0.9989674687385559,
+  "diverged": false,
+  "train_seconds": 65.98009960000127
+}

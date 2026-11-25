@@ -1,0 +1,13 @@
+{
+  "run_id": "main_polysort_adaptive_n16_s456",
+  "model_name": "polysort_adaptive",
+  "n": 16,
+  "seed": 456,
+  "n_params": 30,
+  "epochs_completed": 50,
+  "best_val_mae": 0.036990899592638016,
+  "best_val_mono_rate": 0.7519999742507935,
+  "best_val_pair_acc": 0.9971333146095276,
+  "diverged": false,
+  "train_seconds": 289.98260639999717
+}

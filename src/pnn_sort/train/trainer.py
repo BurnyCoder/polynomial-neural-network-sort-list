@@ -237,10 +237,15 @@ def train_run(
         with log_path.open("a", encoding="utf-8") as f:
             f.write(json.dumps(rec) + "\n")
 
-        # Update live dashboard state file atomically
+        # Update live dashboard state file atomically (with Windows read-lock retry)
         tmp_live = live_state_path.with_suffix(".json.tmp")
         tmp_live.write_text(json.dumps(rec), encoding="utf-8")
-        os.replace(tmp_live, live_state_path)
+        for _attempt in range(5):
+            try:
+                os.replace(tmp_live, live_state_path)
+                break
+            except PermissionError:
+                time.sleep(0.05)
 
         # Save resumable checkpoint
         _atomic_torch_save(

@@ -1,0 +1,13 @@
+{
+  "run_id": "main_poly_mlp_n16_s123",
+  "model_name": "poly_mlp",
+  "n": 16,
+  "seed": 123,
+  "n_params": 38800,
+  "epochs_completed": 60,
+  "best_val_mae": 0.06453976780176163,
+  "best_val_mono_rate": 0.9848999977111816,
+  "best_val_pair_acc": 0.9996324777603149,
+  "diverged": false,
+  "train_seconds": 77.6347894999999
+}

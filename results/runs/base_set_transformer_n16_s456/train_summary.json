@@ -1,0 +1,13 @@
+{
+  "run_id": "base_set_transformer_n16_s456",
+  "model_name": "set_transformer",
+  "n": 16,
+  "seed": 456,
+  "n_params": 96577,
+  "epochs_completed": 60,
+  "best_val_mae": 0.003733595833182335,
+  "best_val_mono_rate": 0.9997999668121338,
+  "best_val_pair_acc": 0.9999983310699463,
+  "diverged": false,
+  "train_seconds": 214.24878920000265
+}
