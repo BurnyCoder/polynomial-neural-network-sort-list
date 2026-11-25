@@ -1,0 +1,13 @@
+{
+  "run_id": "main_polysort_adaptive_m2_n8_s456",
+  "model_name": "polysort_adaptive_m2",
+  "n": 8,
+  "seed": 456,
+  "n_params": 36,
+  "epochs_completed": 50,
+  "best_val_mae": 0.0072406865656375885,
+  "best_val_mono_rate": 0.9575999975204468,
+  "best_val_pair_acc": 0.9982249736785889,
+  "diverged": false,
+  "train_seconds": 80.70728990000134
+}

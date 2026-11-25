@@ -1,0 +1,13 @@
+{
+  "run_id": "main_poly_pairwise_n8_s123",
+  "model_name": "poly_pairwise_rank",
+  "n": 8,
+  "seed": 123,
+  "n_params": 12,
+  "epochs_completed": 50,
+  "best_val_mae": 0.041896067559719086,
+  "best_val_mono_rate": 0.6681999564170837,
+  "best_val_pair_acc": 0.9819856882095337,
+  "diverged": false,
+  "train_seconds": 46.1334182999999
+}

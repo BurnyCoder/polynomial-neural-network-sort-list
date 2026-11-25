@@ -1,0 +1,13 @@
+{
+  "run_id": "base_relu_mlp_n8_s123",
+  "model_name": "relu_mlp",
+  "n": 8,
+  "seed": 123,
+  "n_params": 35208,
+  "epochs_completed": 60,
+  "best_val_mae": 0.03497425466775894,
+  "best_val_mono_rate": 0.9084999561309814,
+  "best_val_pair_acc": 0.9964964389801025,
+  "diverged": false,
+  "train_seconds": 32.68003229999886
+}

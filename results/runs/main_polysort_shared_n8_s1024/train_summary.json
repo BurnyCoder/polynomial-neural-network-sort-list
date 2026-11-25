@@ -1,0 +1,13 @@
+{
+  "run_id": "main_polysort_shared_n8_s1024",
+  "model_name": "polysort_shared",
+  "n": 8,
+  "seed": 1024,
+  "n_params": 3,
+  "epochs_completed": 50,
+  "best_val_mae": 0.03773762285709381,
+  "best_val_mono_rate": 0.9001999497413635,
+  "best_val_pair_acc": 0.994989275932312,
+  "diverged": false,
+  "train_seconds": 60.17326520000279
+}

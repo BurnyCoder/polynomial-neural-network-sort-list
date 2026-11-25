@@ -1,0 +1,13 @@
+{
+  "run_id": "base_set_transformer_n8_s789",
+  "model_name": "set_transformer",
+  "n": 8,
+  "seed": 789,
+  "n_params": 96577,
+  "epochs_completed": 60,
+  "best_val_mae": 0.0022201791871339083,
+  "best_val_mono_rate": 0.9988999962806702,
+  "best_val_pair_acc": 0.999960720539093,
+  "diverged": false,
+  "train_seconds": 263.55383749999964
+}

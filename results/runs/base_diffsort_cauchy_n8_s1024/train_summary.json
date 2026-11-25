@@ -1,0 +1,13 @@
+{
+  "run_id": "base_diffsort_cauchy_n8_s1024",
+  "model_name": "diffsort_cauchy",
+  "n": 8,
+  "seed": 1024,
+  "n_params": 1,
+  "epochs_completed": 50,
+  "best_val_mae": 0.0030661579221487045,
+  "best_val_mono_rate": 1.0,
+  "best_val_pair_acc": 1.0,
+  "diverged": false,
+  "train_seconds": 160.6288201999996
+}
