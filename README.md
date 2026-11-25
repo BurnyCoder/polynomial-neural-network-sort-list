@@ -69,10 +69,27 @@ Requires Python 3.12+ and [`uv`](https://docs.astral.sh/uv/). Tested on Windows 
 git clone https://github.com/BurnyCoder/polynomial-neural-network-sort-list.git
 cd polynomial-neural-network-sort-list
 uv sync --python 3.12
-uv run pytest
+uv run pytest -v
 ```
 
-*(Full CLI commands for training, live accuracy dashboard, evaluation, visualization, and interactive explorer will be added in Phase 3 upon codebase implementation.)*
+### Running Experiments & Live Accuracy Dashboard
+
+```bash
+# Run a single experiment (FX purity audit -> resumable training -> ID/OOD/float64/zero-shot eval)
+uv run python -m pnn_sort.pipeline --run-id main_polysort_shared_n8_s42 --model polysort_shared --n 8 --seed 42
+
+# Run an entire preregistered stage with the real-time web accuracy dashboard active
+uv run python -m pnn_sort.experiments_runner --stage 4a_main --dashboard-port 8765
+
+# Or run the live training dashboard standalone at http://127.0.0.1:8765
+uv run python -m pnn_sort.dashboard.server --port 8765
+```
+
+### Data Flow When Running `pnn-sort`
+1. **Pure-Polynomial Audit (`src/pnn_sort/audit.py`):** Traces the model via `torch.fx.symbolic_trace` and rejects any non-polynomial op before a single gradient step executes.
+2. **Seed-Isolated Data Generation (`src/pnn_sort/data/`):** Generates deterministic SHA-256 keyed `train` ($200\text{k}$), `val` ($10\text{k}$), `test` ($10\text{k}$), and 10 held-out OOD stress suites ($2\text{k}$ each) with zero overlap.
+3. **Resumable Training + Live Telemetry (`src/pnn_sort/train/`, `dashboard/`):** Runs AdamW + cosine schedule with gradient clipping, atomic per-epoch checkpointing (full RNG state resume), and live JSONL updates rendered at `http://127.0.0.1:8765`.
+4. **Statistical Evaluation (`src/pnn_sort/eval/`):** Evaluates Value MAE, RMSE, $L_\infty$, Monotonicity Rate, Pairwise Order Accuracy / Kendall's $\tau$, Multiset $W_1$, Sum Conservation Error, Float64 precision verification, Scale Stability Radius $R_{\text{stable}}$, and Zero-Shot length generalization ($n = 4\text{--}128$), saving per-list arrays for 10,000-resample paired bootstrap CIs and Wilcoxon signed-rank tests.
 
 ---
 

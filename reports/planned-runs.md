@@ -30,7 +30,9 @@ This document enumerates every planned training, control, baseline, ablation, an
 | `ctrl_rand_pinet_n8/n16` | `RandomInitControl` | Yes | Untrained random-init `PiNet-NCPSkip` | 6 | 5 | 8, 16 | None |
 | `ana_cheon_f1_L3_n8/n16` | `AnalyticalCheonSort` | Yes | Bitonic wiring + Cheon $f_1^{(3)}$ ($L=3, d=3$) | 27 | $3\ell$ | 8, 16 | None |
 | `ana_cheon_f2_L2_n8/n16` | `AnalyticalCheonSort` | Yes | Bitonic wiring + Cheon $f_2^{(2)}$ ($L=2, d=5$) | 25 | $2\ell$ | 8, 16 | None |
-| `ana_remez_L3_n8/n16` | `AnalyticalRemezSort` | Yes | Bitonic wiring + Remez minimax odd cubic composition ($L=3, d=3$, Lee et al. 2022) | 27 | $3\ell$ | 8, 16 | None (Remez fit) |
+| `ana_cheon_fg_n8/n16` | `AnalyticalCheonFGSort` | Yes | Bitonic wiring + Cheon/Hong/Mazzone mixed $f_3 \circ g_3$ ($L=2, d=7$) | 49 | $2\ell$ | 8, 16 | None |
+| `ana_remez_L3_n8/n16` | `AnalyticalRemezSort` | Yes | Bitonic wiring + Lee et al. (2022) HiGHS LP minimax odd cubic ($L=3, d=3, \delta=0.10$) | 27 | $3\ell$ | 8, 16 | None (LP fit) |
+| `ana_remez_L3_m2_n8/n16` | `AnalyticalRemezSort` | Yes | Bitonic wiring + Lee et al. (2022) HiGHS LP minimax odd quintic ($L=3, d=5, \delta=0.03$) | 125 | $3\ell$ | 8, 16 | None (LP fit) |
 | **`main_polysort_shared_n8/n16`** | `PolySortNet` (Shared) | Yes | Bitonic wiring + **shared** fixed-point odd Chebyshev CAS ($L=3, m=1 \Rightarrow d=3, D_s=27$, 3 params) | 27 | $3\ell$ | 8, 16 | AdamW, 60 ep |
 | **`main_polysort_shared_m2_n8/n16`** | `PolySortNet` (Shared-Deg5) | Yes | Bitonic wiring + **shared** fixed-point odd Chebyshev CAS ($L=3, m=2 \Rightarrow d=5, D_s=125$, 6 params) | 125 | $3\ell$ | 8, 16 | AdamW, 60 ep |
 | **`main_polysort_adaptive_n8/n16`** | `PolySortNet` (Stage-Adaptive) | Yes | Bitonic wiring + **per-layer** fixed-point odd Chebyshev CAS ($L=3, m=1 \Rightarrow d=3$, $3\ell$ params: 18 for $n=8$, 30 for $n=16$) | 27 | $3\ell$ | 8, 16 | AdamW, 60 ep |

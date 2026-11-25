@@ -10,8 +10,8 @@ Train, rigorously evaluate, ablate, visualize, and publish a scientific study of
 ## Phase Checklist
 - [x] **Phase 0:** Workspace & hardware audit (NVIDIA RTX 5070 Laptop GPU, CUDA 13.4, `torch 2.11.0+cu128`, `uv`, `gh`, `hf`, `pdflatex`, `typst`).
 - [x] **Phase 1:** Full primary-source literature review (`reports/literature-review.md`) and SOTA review (`reports/state-of-the-art-review.md`).
-- [ ] **Phase 2:** Preregistration (`reports/preregistration.md`), Run Matrix (`reports/planned-runs.md`), Docs (`docs/`), Pre-Results `README.md`, GitHub + Hugging Face repo creation & pre-results push.
-- [ ] **Phase 3:** Modular `src/pnn_sort/` package, automated FX purity audit, real-time accuracy web dashboard, full `pytest` suite, pre-training push & Adversarial Self-Review #1.
+- [x] **Phase 2:** Preregistration (`reports/preregistration.md`), Run Matrix (`reports/planned-runs.md`), Docs (`docs/`), Pre-Results `README.md`, GitHub + Hugging Face repo creation & pre-results push.
+- [x] **Phase 3:** Modular `src/pnn_sort/` package, automated FX purity audit, real-time accuracy web dashboard, full `pytest` suite (62/62 passed), pre-training push & Adversarial Self-Review #1.
 - [ ] **Phase 4A:** Zero-training analytical/controls + primary `PolySortNet` (Shared & Stage-Adaptive), incremental GitHub & HF pushes.
 - [ ] **Phase 4B:** Remaining main PNN architectures (`PolyPairwiseRank`, `PolySortNetLearnedWire`, `DeepSetsPoly`, `PiNetSorter`, `PolyMLP`) + scaling study ($n=4..128$), Review #2.
 - [ ] **Phase 4C:** Trained controls (`ShuffledTargetControl`) & non-polynomial baselines (`DiffSort`, `ReLU-MLP`, `SetTransformer`).
