@@ -1,0 +1,13 @@
+{
+  "run_id": "sens_pinet_lr_0.01_n8_s42",
+  "model_name": "pinet_ncp_skip",
+  "n": 8,
+  "seed": 42,
+  "n_params": 201608,
+  "epochs_completed": 60,
+  "best_val_mae": 0.042078208178281784,
+  "best_val_mono_rate": 0.9025999903678894,
+  "best_val_pair_acc": 0.9951928853988647,
+  "diverged": false,
+  "train_seconds": 71.51626319999923
+}

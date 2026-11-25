@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pure Polynomial Neural Networks for Sorting — Interactive Explorer</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --surface: #1e293b;
+      --surface2: #273449;
+      --border: #334155;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --blue: #38bdf8;
+      --green: #34d399;
+      --orange: #fb923c;
+      --red: #f87171;
+      --purple: #c084fc;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+    }
+    header {
+      background: linear-gradient(135deg, #0b1325 0%, #172554 60%, #1e293b 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 28px 24px 22px;
+    }
+    .wrap { max-width: 1220px; margin: 0 auto; }
+    h1 { margin: 0 0 8px; font-size: 1.85rem; letter-spacing: -0.02em; }
+    .subtitle { color: var(--muted); font-size: 0.98rem; max-width: 900px; margin: 0 0 14px; }
+    .meta-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+    .pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 0.78rem; padding: 4px 10px; border-radius: 999px;
+      background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.35); color: var(--blue);
+      text-decoration: none;
+    }
+    .pill.green { background: rgba(52, 211, 153, 0.12); border-color: rgba(52, 211, 153, 0.35); color: var(--green); }
+    .pill.orange { background: rgba(251, 146, 60, 0.12); border-color: rgba(251, 146, 60, 0.35); color: var(--orange); }
+    nav.tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    nav.tabs button {
+      background: var(--surface); color: var(--text); border: 1px solid var(--border);
+      padding: 9px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.9rem;
+      transition: all 0.15s;
+    }
+    nav.tabs button.active, nav.tabs button:hover {
+      background: #0284c7; border-color: #38bdf8; color: #ffffff;
+    }
+    main { padding: 24px; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+    .grid-2 { display: grid; grid-template-columns: 1.15fr 1fr; gap: 18px; }
+    @media (max-width: 940px) { .grid-2 { grid-template-columns: 1fr; } }
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; padding: 18px 20px; margin-bottom: 18px;
+    }
+    .card h2 { margin: 0 0 10px; font-size: 1.12rem; color: #f8fafc; }
+    .card h3 { margin: 14px 0 8px; font-size: 0.96rem; color: var(--blue); }
+    label { display: block; font-size: 0.84rem; color: var(--muted); margin: 10px 0 4px; font-weight: 600; }
+    select, input[type="text"], textarea {
+      width: 100%; background: var(--bg); color: var(--text);
+      border: 1px solid var(--border); border-radius: 8px; padding: 9px 11px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.88rem;
+    }
+    .btn-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .btn {
+      background: var(--surface2); color: var(--text); border: 1px solid var(--border);
+      padding: 7px 12px; border-radius: 7px; cursor: pointer; font-size: 0.82rem; font-weight: 600;
+    }
+    .btn:hover { border-color: var(--blue); color: var(--blue); }
+    .btn.primary { background: #0284c7; border-color: #38bdf8; color: #fff; }
+    .btn.danger { background: rgba(248, 113, 113, 0.14); border-color: rgba(248, 113, 113, 0.45); color: var(--red); }
+    .btn.good { background: rgba(52, 211, 153, 0.14); border-color: rgba(52, 211, 153, 0.45); color: var(--green); }
+    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(135px, 1fr)); gap: 10px; margin: 12px 0; }
+    .kpi {
+      background: var(--bg); border: 1px solid var(--border); border-radius: 9px; padding: 10px 12px;
+    }
+    .kpi .k-lbl { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
+    .kpi .k-val { font-size: 1.15rem; font-weight: 700; margin-top: 2px; font-family: ui-monospace, monospace; }
+    .ok { color: var(--green); }
+    .warn { color: var(--orange); }
+    .bad { color: var(--red); }
+    table { width: 100%; border-collapse: collapse; font-size: 0.83rem; margin-top: 8px; }
+    th, td { padding: 7px 9px; border-bottom: 1px solid var(--border); text-align: left; }
+    th { color: var(--muted); font-weight: 700; background: rgba(15, 23, 42, 0.55); position: sticky; top: 0; }
+    tr:hover td { background: rgba(56, 189, 248, 0.06); }
+    .num { font-family: ui-monospace, monospace; text-align: right; }
+    .badge {
+      display: inline-block; padding: 2px 7px; border-radius: 5px; font-size: 0.72rem; font-weight: 700;
+    }
+    .b-poly { background: rgba(56,189,248,0.18); color: var(--blue); }
+    .b-nonpoly { background: rgba(251,146,60,0.18); color: var(--orange); }
+    .b-pass { background: rgba(52,211,153,0.18); color: var(--green); }
+    .b-fail { background: rgba(248,113,113,0.18); color: var(--red); }
+    canvas, svg.viz { width: 100%; background: #0b1220; border: 1px solid var(--border); border-radius: 9px; display: block; }
+    .fig-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(520px, 1fr)); gap: 18px; }
+    .fig-card img { width: 100%; border-radius: 8px; background: #fff; padding: 4px; }
+    .fig-card p { font-size: 0.85rem; color: var(--muted); margin: 8px 0 0; }
+    .callout {
+      border-left: 4px solid var(--blue); background: rgba(56,189,248,0.08);
+      padding: 10px 14px; border-radius: 0 8px 8px 0; font-size: 0.88rem; margin: 10px 0;
+    }
+    .callout.neg { border-left-color: var(--red); background: rgba(248,113,113,0.08); }
+    .table-scroll { overflow-x: auto; max-height: 520px; }
+    footer { text-align: center; color: var(--muted); font-size: 0.82rem; padding: 24px; border-top: 1px solid var(--border); }
+    a { color: var(--blue); }
+  </style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>Strictly Pure Polynomial Neural Networks for Sorting</h1>
+    <p class="subtitle">
+      Interactive live polynomial evaluator (running <strong>only +, −, and ×</strong> in your browser with zero activations, branches, or built-in sort)
+      and full empirical results explorer — highlighting both <strong>positive wins</strong> and <strong>honest negative/falsified findings</strong>.
+    </p>
+    <div class="meta-pills">
+      <span class="pill green">Author: Libor "Burny" Burian</span>
+      <span class="pill">100% FX-Verified Pure Polynomials</span>
+      <span class="pill orange">178 Preregistered Runs • 5-Seed CIs • Holm-Bonferroni</span>
+      <a class="pill" href="https://github.com/BurnyCoder/polynomial-neural-network-sort-list" target="_blank">GitHub Repo</a>
+      <a class="pill" href="https://huggingface.co/BurnyCoder/polynomial-neural-network-sort-list" target="_blank">Hugging Face Checkpoints</a>
+    </div>
+    <nav class="tabs">
+      <button class="active" data-tab="sorter">1. Live Polynomial Sorter</button>
+      <button data-tab="results">2. Results &amp; Significance Explorer</button>
+      <button data-tab="ablations">3. Causal Ablations (Positive &amp; Falsified)</button>
+      <button data-tab="figures">4. Publication Figures</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- TAB 1: LIVE PURE POLYNOMIAL SORTER -->
+  <section id="tab-sorter" class="tab-panel active">
+    <div class="grid-2">
+      <div class="card">
+        <h2>Run a Pure Polynomial Neural Network Live</h2>
+        <div class="callout">
+          <strong>Strict Purity Guarantee:</strong> The JavaScript forward pass below evaluates the trained comparator weights using
+          <em>exclusively</em> additions, subtractions, and multiplications inside Batcher's Bitonic wiring — zero <code>if/else</code> comparisons,
+          zero <code>Math.max/min/abs/exp/tanh</code>, and zero <code>Array.sort()</code> during inference (<code>Array.sort</code> is used <em>only</em> afterward to compute ground-truth error metrics).
+        </div>
+
+        <label for="modelSelect">Select Exported Pure-Polynomial Model:</label>
+        <select id="modelSelect"></select>
+
+        <label for="inputList">Unsorted Input List (power-of-2 length: 4, 8, 16, 32, or 64 for Shared models):</label>
+        <input id="inputList" type="text" value="0.72, -0.84, 0.15, -0.22, 0.91, -0.55, 0.44, -0.05" />
+
+        <div class="btn-row">
+          <button class="btn primary" id="btnRun">Sort via Pure Polynomial</button>
+          <button class="btn good" data-preset="uniform8">Random Uniform n=8</button>
+          <button class="btn good" data-preset="nearties8">Near-Ties (Δ=0.002)</button>
+          <button class="btn good" data-preset="dup8">50% Duplicates</button>
+          <button class="btn good" data-preset="shift100">Shift +100 (Exact Equiv.)</button>
+          <button class="btn good" data-preset="zeroshot16">Zero-Shot n=16</button>
+          <button class="btn good" data-preset="zeroshot32">Zero-Shot n=32</button>
+          <button class="btn danger" data-preset="scale2">Negative Test: Scale 2.0× Cliff</button>
+        </div>
+
+        <div class="kpi-grid" id="liveKpis"></div>
+
+        <h3>Element-by-Element Output Comparison</h3>
+        <div class="table-scroll" style="max-height:260px;">
+          <table>
+            <thead>
+              <tr><th>Rank k</th><th class="num">Unsorted Input x</th><th class="num">Ground Truth sort(x)</th><th class="num">Pure-Poly Output ŷ</th><th class="num">|ŷ − y|</th></tr>
+            </thead>
+            <tbody id="liveTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div>
+        <div class="card">
+          <h2>Stage-by-Stage Bitonic Wire Trajectories</h2>
+          <p style="font-size:0.83rem;color:var(--muted);margin:0 0 10px;">
+            Watch how each parallel pure-polynomial Compare-and-Swap stage routes unsorted values into ascending order without a single discrete comparison.
+          </p>
+          <svg id="wireSvg" class="viz" viewBox="0 0 560 270" height="270"></svg>
+        </div>
+        <div class="card">
+          <h2>Active Model Comparator Curve s(Δ) &amp; Value Error Δ|1 − s(Δ)|</h2>
+          <canvas id="curveCanvas" width="560" height="240"></canvas>
+          <p id="modelNote" style="font-size:0.82rem;color:var(--muted);margin:8px 0 0;"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 2: RESULTS & STATISTICAL SIGNIFICANCE EXPLORER -->
+  <section id="tab-results" class="tab-panel">
+    <div class="card">
+      <h2>Multi-Seed Core Model Benchmarks (5 Seeds × 10,000 Held-Out Lists)</h2>
+      <div class="btn-row" style="margin-bottom:12px;">
+        <button class="btn primary" id="btnN8">Show n = 8</button>
+        <button class="btn" id="btnN16">Show n = 16</button>
+        <select id="groupFilter" style="width:auto;">
+          <option value="all">All Model Groups</option>
+          <option value="main_pnn">Strictly Pure PNNs Only</option>
+          <option value="non_poly">Non-Polynomial Baselines Only</option>
+        </select>
+      </div>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Model</th><th>Type</th><th class="num">Params</th><th class="num">Seeds</th>
+              <th class="num">Test MAE (Mean ± SD)</th><th class="num">95% Boot CI</th>
+              <th class="num">Mono %</th><th class="num">Ex@0.05 %</th><th class="num">Kendall τ</th>
+              <th class="num">Shift +100</th><th class="num">Near-Ties 1e-3</th><th class="num">R_stable</th>
+            </tr>
+          </thead>
+          <tbody id="msTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Holm-Bonferroni Paired Wilcoxon Hypothesis Tests (Preregistered H1–H6)</h2>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Test ID</th><th>Comparison (A vs B)</th><th class="num">n</th><th class="num">Seeds</th>
+              <th class="num">Mean A</th><th class="num">Mean B</th><th class="num">Diff (A−B) [95% CI]</th>
+              <th class="num">Rank-Biserial r</th><th class="num">p_holm</th><th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="statsTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 3: CAUSAL ABLATIONS (POSITIVE & NEGATIVE) -->
+  <section id="tab-ablations" class="tab-panel">
+    <div class="grid-2">
+      <div class="callout">
+        <strong>Confirmed Causal Mechanisms:</strong><br/>
+        • <strong>Iso-Parameter Depth Separation (A2):</strong> At 4 params/stage, composite <code>L=4, d=3</code> (deg 81) beats flat <code>L=1, d=9</code> by <strong>4.28×</strong> on MAE and widens <code>R_stable</code> from <code>0.00 → 1.50</code>.<br/>
+        • <strong>Wiring Topology Indispensability (A4):</strong> Random fixed wiring collapses to <code>0.00%</code> Mono (MAE 0.39–0.44); Batcher Odd-Even Merge cuts MAE 10–13% vs Bitonic; Odd-Even Transposition reaches <code>99.3% / 96.8%</code> Mono.<br/>
+        • <strong>Causal Scale Cliff Proof (A6):</strong> Adding non-poly <code>max(|x|)</code> scaling lifts <code>R_stable: 1.3 → 5.0</code>, proving pure polynomial unboundedness causes the cliff (at the cost of breaking Shift +100 equivariance).
+      </div>
+      <div class="callout neg">
+        <strong>Honest Negative Results &amp; Falsified Hypotheses:</strong><br/>
+        • <strong>H6 Part 1 FALSIFIED on ID MAE:</strong> Removing the <code>h(1)=1</code> fixed-point constraint cuts ID MAE by <strong>26–30%</strong> via late-stage domain contraction (<code>s_5(1) = −444..−1038</code>), trading away scale stability (<code>R_stable: 1.3 → 1.1</code>).<br/>
+        • <strong>H3 Part 1 FALSIFIED at strict iso-degree D=9:</strong> 4-param/stage flat deg-9 beats 2-param/stage composite <code>L=2, d=3</code> on ID MAE before exploding at scale 1.1×.<br/>
+        • <strong>Pure-Poly Upper Bound Gap:</strong> Non-poly <code>DiffSort</code> and <code>SetTransformer</code> remain sharper in-distribution, and all pure polynomials blow up outside their finite stability radius.
+      </div>
+    </div>
+    <div class="card">
+      <h2>All 30 Stage-4D Causal Ablation Runs (A1–A6)</h2>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Ablation Run ID</th><th class="num">n</th><th>Purity</th><th class="num">Params</th>
+              <th class="num">ID MAE</th><th class="num">Mono %</th><th class="num">Ex@0.05 %</th>
+              <th class="num">Kendall τ</th><th class="num">Shift +100</th><th class="num">R_stable</th>
+            </tr>
+          </thead>
+          <tbody id="ablTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 4: PUBLICATION FIGURES -->
+  <section id="tab-figures" class="tab-panel">
+    <div class="fig-grid">
+      <div class="card fig-card">
+        <h2>Figure 1: PolySortNet Architecture &amp; Pure-PNN Ladder</h2>
+        <img src="figures/fig1_architecture.png" alt="Architecture diagram" />
+        <p>Fixed Bitonic CAS wiring paired with strictly pure-polynomial composite odd Chebyshev comparators and the 5-tier pure-PNN inductive-bias ladder.</p>
+      </div>
+      <div class="card fig-card">
+        <h2>Figure 2: Held-Out Sorting Accuracy (n = 8 &amp; n = 16)</h2>
+        <img src="figures/fig2_main_comparison.png" alt="Main benchmark comparison" />
+        <p>5-seed mean ± SD Value MAE (log scale) across trained pure PNNs, zero-training analytical CKKS polynomials, non-polynomial baselines, and leakage controls.</p>
+      </div>
+      <div class="card fig-card">
+        <h2>Figure 3: Mechanistic Comparator Transfer &amp; Stage Specialization</h2>
+        <img src="figures/fig3_mechanistic_comparators.png" alt="Comparator transfer curves" />
+        <p>Why data-trained composite polynomials outperform analytical CKKS by minimizing value-weighted error Δ|1−s(Δ)| and sharpening origin slope across stages.</p>
+      </div>
+      <div class="card fig-card">
+        <h2>Figure 4: Output Examples — Positive Wins &amp; Negative Failures</h2>
+        <img src="figures/fig4_output_examples.png" alt="Output examples" />
+        <p>Side-by-side predictions on ID uniform lists, Shift +100 (where pure PolySortNet preserves exact equivariance while SetTransformer &amp; PiNet fail), and Scale 2.0× blow-up.</p>
+      </div>
+      <div class="card fig-card">
+        <h2>Figure 5: Zero-Shot Length Scaling &amp; Scale-Extrapolation Cliff</h2>
+        <img src="figures/fig5_zeroshot_and_scale_cliff.png" alt="Zero-shot and scale cliff" />
+        <p>6-parameter PolySortNet-Shared-m2 extrapolates 16× zero-shot to n=128 (beating SetTransformer 2.65×), while showing the sharp polynomial cliff vs non-poly baselines.</p>
+      </div>
+      <div class="card fig-card">
+        <h2>Figure 6: Causal Ablations (A1–A4) &amp; Convergence</h2>
+        <img src="figures/fig6_ablations_and_training.png" alt="Ablations and training curves" />
+        <p>Iso-degree vs iso-parameter separation, parameterization accuracy-vs-stability Pareto frontier, wiring topology causality, and validation loss trajectories.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  Pure Polynomial Neural Networks for Sorting • Authored by Libor "Burny" Burian (2026-11-25) •
+  <a href="https://github.com/BurnyCoder/polynomial-neural-network-sort-list" target="_blank">Source Code &amp; Paper</a>
+</footer>
+
+<script>
+// ---------------------------------------------------------------------------
+// Strictly Pure-Polynomial Forward Engine (+, -, * ONLY — zero Math.max/min/abs/sort)
+// ---------------------------------------------------------------------------
+function bitonicStages(n) {
+  const stages = [];
+  for (let k = 2; k <= n; k <<= 1) {
+    for (let j = k >> 1; j > 0; j >>= 1) {
+      const pairs = [];
+      for (let i = 0; i < n; i++) {
+        const l = i ^ j;
+        if (l > i) {
+          const asc = (i & k) === 0;
+          pairs.push(asc ? [i, l] : [l, i]);
+        }
+      }
+      stages.push(pairs);
+    }
+  }
+  return stages;
+}
+
+function evalLayerPurePoly(u, coeffs, mode) {
+  const m = coeffs.length;
+  if (mode === "fixed_point_cheby") {
+    // h(u) = u + u * (1 - u^2) * sum_{j=0}^{m-1} c_j * T_{2j}(u)
+    const u2 = u * u;
+    const v = 2.0 * u2 - 1.0; // T_2(u)
+    let tPrev = 1.0, tCurr = v;
+    let polySum = coeffs[0] * 1.0;
+    if (m > 1) polySum = polySum + coeffs[1] * v;
+    for (let j = 2; j < m; j++) {
+      const tNext = 2.0 * v * tCurr - tPrev;
+      polySum = polySum + coeffs[j] * tNext;
+      tPrev = tCurr;
+      tCurr = tNext;
+    }
+    return u + u * (1.0 - u2) * polySum;
+  } else if (mode === "unconstrained_odd_cheby") {
+    // h(u) = sum_{j=0}^{m-1} c_j * T_{2j+1}(u)
+    const u2 = u * u;
+    const v = 2.0 * u2 - 1.0;
+    let tPrev = u;
+    let tCurr = 2.0 * v * u - u; // T_3(u)
+    let acc = coeffs[0] * tPrev;
+    if (m > 1) acc = acc + coeffs[1] * tCurr;
+    for (let j = 2; j < m; j++) {
+      const tNext = 2.0 * v * tCurr - tPrev;
+      acc = acc + coeffs[j] * tNext;
+      tPrev = tCurr;
+      tCurr = tNext;
+    }
+    return acc;
+  } else if (mode === "raw_monomial") {
+    // h(u) = sum_{j=0}^{m-1} c_j * u^{2j+1}
+    const u2 = u * u;
+    let pow = u;
+    let acc = 0.0;
+    for (let j = 0; j < m; j++) {
+      acc = acc + coeffs[j] * pow;
+      pow = pow * u2;
+    }
+    return acc;
+  }
+  return u;
+}
+
+function evalSignPurePoly(delta, layerCoeffs, mode) {
+  let u = delta;
+  for (let k = 0; k < layerCoeffs.length; k++) {
+    u = evalLayerPurePoly(u, layerCoeffs[k], mode);
+  }
+  return u;
+}
+
+function runPurePolySort(xIn, modelObj) {
+  const n = xIn.length;
+  const stages = bitonicStages(n);
+  const traj = [xIn.slice()];
+  let cur = xIn.slice();
+  for (let s = 0; s < stages.length; s++) {
+    const next = cur.slice();
+    const layerCoeffs = modelObj.shared
+      ? modelObj.coeffs_shared
+      : modelObj.coeffs_stages[Math.min(s, modelObj.coeffs_stages.length - 1)];
+    const pairs = stages[s];
+    for (let p = 0; p < pairs.length; p++) {
+      const i = pairs[p][0], j = pairs[p][1];
+      const a = cur[i], b = cur[j];
+      const halfSum = 0.5 * (a + b);
+      const delta = 0.5 * (b - a);
+      const sVal = evalSignPurePoly(delta, layerCoeffs, modelObj.mode);
+      const absHalf = delta * sVal;
+      next[i] = halfSum - absHalf;
+      next[j] = halfSum + absHalf;
+    }
+    cur = next;
+    traj.push(cur.slice());
+  }
+  return { yPred: cur, traj, stages };
+}
+
+// ---------------------------------------------------------------------------
+// UI State & Rendering
+// ---------------------------------------------------------------------------
+let WEIGHTS = {};
+let EXPLORER = {};
+let activeN = "8";
+
+function fmt(v, d = 5) {
+  if (v === null || v === undefined || !isFinite(v) || Math.abs(v) > 1e5) return "INF";
+  return Number(v).toFixed(d);
+}
+
+function drawWireSvg(traj) {
+  const svg = document.getElementById("wireSvg");
+  const W = 560, H = 270, padL = 44, padR = 44, padT = 22, padB = 28;
+  const S = traj.length;
+  const n = traj[0].length;
+  const allVals = traj.flat().filter(v => isFinite(v));
+  let vMin = Math.min(...allVals), vMax = Math.max(...allVals);
+  if (!isFinite(vMin) || !isFinite(vMax) || vMax - vMin < 1e-9) { vMin = -1; vMax = 1; }
+  // Clamp extreme blowup visually so SVG remains readable
+  const span = Math.max(vMax - vMin, 1e-6);
+  const clipLo = Math.max(vMin, -50), clipHi = Math.min(vMax, 200);
+  const cSpan = Math.max(clipHi - clipLo, 1e-6);
+  const xPos = s => padL + (s / (S - 1)) * (W - padL - padR);
+  const yPos = v => {
+    const vc = Math.max(clipLo, Math.min(clipHi, isFinite(v) ? v : clipHi));
+    return padT + (1 - (vc - clipLo) / cSpan) * (H - padT - padB);
+  };
+  const colors = ["#38bdf8","#34d399","#fb923c","#c084fc","#facc15","#f472b6","#60a5fa","#a3e635"];
+  let html = "";
+  for (let s = 0; s < S; s++) {
+    const x = xPos(s);
+    html += `<line x1="${x}" y1="${padT}" x2="${x}" y2="${H-padB}" stroke="#1e293b" stroke-width="1"/>`;
+    if (S <= 12 || s === 0 || s === S - 1 || s % 4 === 0) {
+      html += `<text x="${x}" y="${H-8}" fill="#94a3b8" font-size="10" text-anchor="middle">${s === 0 ? "In" : "S" + s}</text>`;
+    }
+  }
+  for (let i = 0; i < n; i++) {
+    const pts = [];
+    for (let s = 0; s < S; s++) {
+      pts.push(`${xPos(s).toFixed(1)},${yPos(traj[s][i]).toFixed(1)}`);
+    }
+    const c = colors[i % colors.length];
+    html += `<polyline fill="none" stroke="${c}" stroke-width="${n <= 16 ? 2.1 : 1.2}" opacity="0.88" points="${pts.join(" ")}"/>`;
+  }
+  html += `<text x="6" y="${padT+8}" fill="#94a3b8" font-size="10">${clipHi.toFixed(1)}</text>`;
+  html += `<text x="6" y="${H-padB}" fill="#94a3b8" font-size="10">${clipLo.toFixed(1)}</text>`;
+  svg.innerHTML = html;
+}
+
+function drawComparatorCanvas(modelObj) {
+  const canvas = document.getElementById("curveCanvas");
+  const ctx = canvas.getContext("2d");
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = "#0b1220";
+  ctx.fillRect(0, 0, W, H);
+
+  const pad = { l: 42, r: 16, t: 24, b: 30 };
+  const pw = W - pad.l - pad.r, ph = H - pad.t - pad.b;
+  const xMap = u => pad.l + (u / 1.2) * pw;
+  const yMap = v => pad.t + (1 - (Math.max(-0.2, Math.min(1.3, v)) + 0.2) / 1.5) * ph;
+
+  // Grid & axes
+  ctx.strokeStyle = "#1e293b"; ctx.lineWidth = 1;
+  [0, 0.5, 1.0].forEach(v => {
+    const y = yMap(v);
+    ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(W - pad.r, y); ctx.stroke();
+    ctx.fillStyle = "#94a3b8"; ctx.font = "10px monospace";
+    ctx.fillText(v.toFixed(1), 8, y + 3);
+  });
+  ctx.setLineDash([4, 4]);
+  ctx.strokeStyle = "#475569";
+  ctx.beginPath(); ctx.moveTo(xMap(1.0), pad.t); ctx.lineTo(xMap(1.0), H - pad.b); ctx.stroke();
+  ctx.setLineDash([]);
+
+  const layerCoeffs = modelObj.shared ? modelObj.coeffs_shared : modelObj.coeffs_stages[modelObj.coeffs_stages.length - 1];
+  // Plot s(u)
+  ctx.strokeStyle = "#38bdf8"; ctx.lineWidth = 2.3;
+  ctx.beginPath();
+  for (let i = 0; i <= 240; i++) {
+    const u = (i / 240) * 1.2;
+    const s = evalSignPurePoly(u, layerCoeffs, modelObj.mode);
+    if (i === 0) ctx.moveTo(xMap(u), yMap(s)); else ctx.lineTo(xMap(u), yMap(s));
+  }
+  ctx.stroke();
+
+  // Plot value error u*|1 - s(u)| for u in [0, 1]
+  ctx.strokeStyle = "#fb923c"; ctx.lineWidth = 2.0;
+  ctx.beginPath();
+  for (let i = 0; i <= 200; i++) {
+    const u = i / 200;
+    const s = evalSignPurePoly(u, layerCoeffs, modelObj.mode);
+    const err = u * Math.abs(1.0 - s);
+    if (i === 0) ctx.moveTo(xMap(u), yMap(err)); else ctx.lineTo(xMap(u), yMap(err));
+  }
+  ctx.stroke();
+
+  ctx.fillStyle = "#38bdf8"; ctx.font = "11px sans-serif"; ctx.fillText("— s(Δ) comparator", pad.l + 8, 16);
+  ctx.fillStyle = "#fb923c"; ctx.fillText("— Δ|1 − s(Δ)| value error", pad.l + 145, 16);
+  ctx.fillStyle = "#94a3b8"; ctx.fillText("Δ = 0", pad.l, H - 8);
+  ctx.fillText("Δ = 1.0 (domain edge)", xMap(1.0) - 48, H - 8);
+}
+
+function runLiveDemo() {
+  const key = document.getElementById("modelSelect").value;
+  const m = WEIGHTS[key];
+  if (!m) return;
+  const raw = document.getElementById("inputList").value.split(/[\s,;]+/).filter(Boolean).map(Number);
+  if (raw.some(v => Number.isNaN(v)) || raw.length < 2) return;
+  // Require power of 2
+  let n = raw.length;
+  if ((n & (n - 1)) !== 0) {
+    alert("Bitonic sorting network requires a power-of-2 length (4, 8, 16, 32, or 64).");
+    return;
+  }
+  if (!m.shared && n !== m.n) {
+    // Automatically switch to matching shared model if user tries zero-shot length
+    const sharedKey = "polysort_shared_m2_n8";
+    if (WEIGHTS[sharedKey]) {
+      document.getElementById("modelSelect").value = sharedKey;
+      runLiveDemo();
+      return;
+    }
+  }
+  const { yPred, traj } = runPurePolySort(raw, m);
+  const yTrue = raw.slice().sort((a, b) => a - b); // Ground truth ONLY for eval display!
+
+  const finite = yPred.every(v => isFinite(v));
+  const errs = yPred.map((v, i) => Math.abs(v - yTrue[i]));
+  const mae = finite ? errs.reduce((a, b) => a + b, 0) / n : Infinity;
+  const linf = finite ? Math.max(...errs) : Infinity;
+  const sumErr = finite ? Math.abs(yPred.reduce((a, b) => a + b, 0) - raw.reduce((a, b) => a + b, 0)) : Infinity;
+  let mono = finite;
+  let conc = 0, tot = 0;
+  for (let i = 0; i < n; i++) {
+    if (i < n - 1 && yPred[i] > yPred[i + 1] + 1e-7) mono = false;
+    for (let j = i + 1; j < n; j++) { tot++; if (finite && yPred[i] <= yPred[j] + 1e-7) conc++; }
+  }
+  const tau = finite ? 2 * (conc / tot) - 1 : -1;
+
+  document.getElementById("liveKpis").innerHTML = `
+    <div class="kpi"><div class="k-lbl">Value MAE (↓)</div><div class="k-val ${mae < 0.02 ? 'ok' : mae < 0.08 ? 'warn' : 'bad'}">${fmt(mae, 5)}</div></div>
+    <div class="kpi"><div class="k-lbl">Max Error L∞</div><div class="k-val ${linf < 0.05 ? 'ok' : 'bad'}">${fmt(linf, 5)}</div></div>
+    <div class="kpi"><div class="k-lbl">Monotonic?</div><div class="k-val ${mono ? 'ok' : 'bad'}">${mono ? 'YES ✓' : 'NO ✗'}</div></div>
+    <div class="kpi"><div class="k-lbl">Kendall τ</div><div class="k-val ${tau > 0.98 ? 'ok' : 'bad'}">${tau.toFixed(4)}</div></div>
+    <div class="kpi"><div class="k-lbl">Sum Error</div><div class="k-val ok">${isFinite(sumErr) ? sumErr.toExponential(1) : 'INF'}</div></div>
+    <div class="kpi"><div class="k-lbl">Parameters</div><div class="k-val">${m.metadata.n_params}</div></div>
+  `;
+
+  document.getElementById("liveTableBody").innerHTML = yTrue.map((yt, i) => `
+    <tr>
+      <td>${i + 1}</td>
+      <td class="num">${raw[i].toFixed(4)}</td>
+      <td class="num">${yt.toFixed(4)}</td>
+      <td class="num" style="color:${isFinite(yPred[i]) ? '#38bdf8' : '#f87171'}">${isFinite(yPred[i]) ? yPred[i].toFixed(4) : 'INF'}</td>
+      <td class="num">${fmt(errs[i], 5)}</td>
+    </tr>
+  `).join("");
+
+  drawWireSvg(traj);
+  drawComparatorCanvas(m);
+  document.getElementById("modelNote").textContent =
+    `Mode: ${m.mode} | Layers L=${m.num_layers} | Terms m=${m.num_terms} | Shared=${m.shared} | Test MAE=${fmt(m.metadata.mae,5)} | R_stable=${m.metadata.r_stable}`;
+}
+
+function applyPreset(name) {
+  let arr = [];
+  if (name === "uniform8") {
+    arr = Array.from({ length: 8 }, () => +(Math.random() * 2 - 1).toFixed(3));
+  } else if (name === "nearties8") {
+    arr = [0.200, 0.202, -0.501, -0.499, 0.201, -0.500, 0.700, 0.702];
+  } else if (name === "dup8") {
+    arr = [0.6, -0.4, 0.6, 0.1, -0.4, 0.6, 0.1, -0.4];
+  } else if (name === "shift100") {
+    arr = [100.72, 99.16, 100.15, 99.78, 100.91, 99.45, 100.44, 99.95];
+  } else if (name === "zeroshot16") {
+    document.getElementById("modelSelect").value = "polysort_shared_m2_n8";
+    arr = Array.from({ length: 16 }, () => +(Math.random() * 2 - 1).toFixed(3));
+  } else if (name === "zeroshot32") {
+    document.getElementById("modelSelect").value = "polysort_shared_m2_n8";
+    arr = Array.from({ length: 32 }, () => +(Math.random() * 2 - 1).toFixed(3));
+  } else if (name === "scale2") {
+    arr = [1.44, -1.68, 0.30, -0.44, 1.82, -1.10, 0.88, -0.10];
+  }
+  document.getElementById("inputList").value = arr.join(", ");
+  runLiveDemo();
+}
+
+function renderMultiseedTable() {
+  const rows = (EXPLORER.multiseed && EXPLORER.multiseed[activeN]) || [];
+  const filt = document.getElementById("groupFilter").value;
+  const shown = rows.filter(r => filt === "all" || r.group === filt).sort((a, b) => a.mae_mean - b.mae_mean);
+  document.getElementById("msTableBody").innerHTML = shown.map(r => `
+    <tr>
+      <td><strong>${r.label}</strong></td>
+      <td><span class="badge ${r.is_pure_polynomial ? 'b-poly' : 'b-nonpoly'}">${r.is_pure_polynomial ? 'Pure Poly' : 'Non-Poly'}</span></td>
+      <td class="num">${r.n_params.toLocaleString()}</td>
+      <td class="num">${r.n_seeds}</td>
+      <td class="num">${fmt(r.mae_mean, 5)} ± ${fmt(r.mae_std, 5)}</td>
+      <td class="num">[${fmt(r.mae_boot_ci95_low, 5)}, ${fmt(r.mae_boot_ci95_high, 5)}]</td>
+      <td class="num">${(r.mono_mean * 100).toFixed(2)}%</td>
+      <td class="num">${(r.exact05_mean * 100).toFixed(1)}%</td>
+      <td class="num">${r.tau_mean.toFixed(4)}</td>
+      <td class="num">${fmt(r.ood_shift100_mean, 4)}</td>
+      <td class="num">${fmt(r.ood_nearties1e3_mean, 4)}</td>
+      <td class="num">${r.r_stable_mean.toFixed(2)}</td>
+    </tr>
+  `).join("");
+}
+
+function renderStatsTable() {
+  const rows = EXPLORER.statistical_tests || [];
+  document.getElementById("statsTableBody").innerHTML = rows.map(r => `
+    <tr>
+      <td><code>${r.test_id}</code></td>
+      <td>${r.description}</td>
+      <td class="num">${r.n}</td>
+      <td class="num">${r.n_seeds_pooled}</td>
+      <td class="num">${fmt(r.mean_a, 5)}</td>
+      <td class="num">${fmt(r.mean_b, 5)}</td>
+      <td class="num">${r.mean_diff >= 0 ? '+' : ''}${fmt(r.mean_diff, 5)} [${fmt(r.ci_low, 5)}, ${fmt(r.ci_high, 5)}]</td>
+      <td class="num">${r.rank_biserial >= 0 ? '+' : ''}${r.rank_biserial.toFixed(3)}</td>
+      <td class="num">${r.p_holm.toExponential(2)}</td>
+      <td><span class="badge ${r.significant_0.05 ? (r.mean_diff < 0 ? 'b-pass' : 'b-fail') : 'b-nonpoly'}">${r.significant_0.05 ? (r.mean_diff < 0 ? 'A Wins (p<.05)' : 'B Wins (p<.05)') : 'n.s.'}</span></td>
+    </tr>
+  `).join("");
+}
+
+function renderAblationsTable() {
+  const rows = (EXPLORER.ablations || []).slice().sort((a, b) => a.n - b.n || a.run_id.localeCompare(b.run_id));
+  document.getElementById("ablTableBody").innerHTML = rows.map(r => `
+    <tr>
+      <td><code>${r.run_id}</code></td>
+      <td class="num">${r.n}</td>
+      <td><span class="badge ${r.is_pure_polynomial ? 'b-poly' : 'b-nonpoly'}">${r.is_pure_polynomial ? 'Pure Poly' : 'Non-Poly'}</span></td>
+      <td class="num">${r.n_params}</td>
+      <td class="num">${fmt(r.mae, 5)}</td>
+      <td class="num">${(r.mono_rate * 100).toFixed(2)}%</td>
+      <td class="num">${(r.exact_sort_0.05 * 100).toFixed(1)}%</td>
+      <td class="num">${r.kendall_tau.toFixed(4)}</td>
+      <td class="num">${fmt(r.shift100_mae, 4)}</td>
+      <td class="num">${r.r_stable.toFixed(2)}</td>
+    </tr>
+  `).join("");
+}
+
+async function init() {
+  try {
+    const [wResp, eResp] = await Promise.all([fetch("weights.json"), fetch("explorer_data.json")]);
+    WEIGHTS = await wResp.json();
+    EXPLORER = await eResp.json();
+    const sel = document.getElementById("modelSelect");
+    Object.entries(WEIGHTS).forEach(([k, v]) => {
+      const opt = document.createElement("option");
+      opt.value = k;
+      opt.textContent = v.metadata.label;
+      sel.appendChild(opt);
+    });
+    runLiveDemo();
+    renderMultiseedTable();
+    renderStatsTable();
+    renderAblationsTable();
+  } catch (err) {
+    document.getElementById("liveKpis").innerHTML = `<div class="callout neg">Could not load weights.json (${err}). Serve docs/ over HTTP or open on GitHub Pages.</div>`;
+  }
+}
+
+document.querySelectorAll("nav.tabs button").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll("nav.tabs button").forEach(b => b.classList.remove("active"));
+    document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+    btn.classList.add("active");
+    document.getElementById("tab-" + btn.dataset.tab).classList.add("active");
+  });
+});
+document.getElementById("btnRun").addEventListener("click", runLiveDemo);
+document.getElementById("modelSelect").addEventListener("change", runLiveDemo);
+document.querySelectorAll("[data-preset]").forEach(b => b.addEventListener("click", () => applyPreset(b.dataset.preset)));
+document.getElementById("btnN8").addEventListener("click", () => {
+  activeN = "8";
+  document.getElementById("btnN8").classList.add("primary");
+  document.getElementById("btnN16").classList.remove("primary");
+  renderMultiseedTable();
+});
+document.getElementById("btnN16").addEventListener("click", () => {
+  activeN = "16";
+  document.getElementById("btnN16").classList.add("primary");
+  document.getElementById("btnN8").classList.remove("primary");
+  renderMultiseedTable();
+});
+document.getElementById("groupFilter").addEventListener("change", renderMultiseedTable);
+
+init();
+</script>
+</body>
+</html>
