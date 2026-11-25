@@ -115,4 +115,7 @@
 ## 7. Pre-Hoc vs. Post-Hoc Analysis Log
 
 - **Pre-Hoc Analyses (Locked 2026-11-25):** Hypotheses H1–H6, all 17 models/controls, all 6 ablation families, and all 10 OOD suites documented in `reports/planned-runs.md`.
-- **Post-Hoc Exploratory Analyses:** *(None yet — any exploratory follow-up triggered by unexpected empirical findings will be logged here with date and rationale.)*
+- **Post-Hoc Exploratory Analyses & Logged Engineering Adjustments:**
+  - *2026-11-25 (Pre-Stage-4A Baseline Steelmanning):* Added two stronger zero-training analytical CKKS baselines (`analytical_cheon_fg` exact $f_3 \circ g_3$ from Cheon 2020 / Mazzone 2025, and `analytical_remez` at $m=2$, deg 125 via exact HiGHS convex LP) to ensure trained PNNs are benchmarked against strong analytical methods rather than $f_1^{(3)}$ alone.
+  - *2026-11-25 (GPU Throughput Note):* After observing WDDM kernel-launch overhead on RTX 5070 during `main_polysort_shared_n8_s42` (`batch_size=512`, converged by epoch 8 in 650s), switched remaining runs to `batch_size=4096, lr=8e-3, epochs=50` for compact sorting networks (1–60 params) and `batch_size=2048, lr=2e-3, epochs=60` for dense neural models; explicit batch-size sensitivity (`512` vs `2048` vs `4096`) is verified in Stage 4E.
+  - *2026-11-25 (`R_stable` Definition Clarification):* Clarified `R_stable` to sweep upper scale factors $s \ge 1.0$ (since $s = 0.1$ tests shrinkage rather than upper polynomial blow-up).

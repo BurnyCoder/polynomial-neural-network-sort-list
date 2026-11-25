@@ -17,6 +17,7 @@ checkpoints/
 *.pth
 *.safetensors
 *.bin
+*.npz
 tmp/
 .cache/
 literature_cache/

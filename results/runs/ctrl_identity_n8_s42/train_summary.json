@@ -1,0 +1,13 @@
+{
+  "run_id": "ctrl_identity_n8_s42",
+  "model_name": "identity_control",
+  "n": 8,
+  "seed": 42,
+  "n_params": 0,
+  "epochs_completed": 0,
+  "best_val_mae": 0.5821372270584106,
+  "best_val_mono_rate": 0.0,
+  "best_val_pair_acc": 0.500249981880188,
+  "diverged": false,
+  "train_seconds": 17.053826200000913
+}

@@ -40,3 +40,17 @@ This living log documents every key insight gained from the literature review, m
    - *Root Cause:* When $\delta$ is set too aggressively for composition depth $L = 3$, the minimax equioscillation amplitude $\tau_L$ pushes $|s(\Delta)|$ up to $1 + \tau_L \approx 1.53$, allowing wire values to escape $[-1, 1]$ and cascade exponentially across sorting stages! Conversely, scaling the final stage by $1/(1+\tau_L)$ keeps wires bounded but shrinks every swap by $(1+\tau_L)^{-1}$ per stage, compounding to $(1+\tau_L)^{-\ell}$ attenuation.
    - *Fix:* Implemented **Lee et al. (2022) Algorithm 2** via exact **HiGHS convex linear programming** (`scipy.optimize.linprog`), rescaling intermediate stages $1 \dots L-1$ by $1/\text{peak}$ into $[\alpha_k, 1]$ while centering stage $L$ at $1.0$ with depth-matched $\delta$ ($\delta=0.10$ for $L=3, m=1 \Rightarrow \text{MAE} \approx 0.044$, $2.6\times$ better than Cheon $f_1^{(3)}$; $\delta=0.03$ for $L=3, m=2$).
 
+---
+
+## Learnings from Stage 4A Execution & GPU Profiling
+
+7. **Bug Fixed in `R_stable` Upper Stability Radius Calculation:**
+   - *Issue:* During Stage 4A controls, `ana_cheon_fg_n8` achieved `MAE = 0.0279` at $s = 1.0$, yet reported `R_stable = 0.0`.
+   - *Root Cause:* `SCALE_SWEEP_FACTORS` begins with `0.1, 0.5, 1.0, 1.05, ...`. At tiny shrinkage $s = 0.1$, all pairwise differences shrink by $10\times$ into the near-origin linear zone of $s(\Delta)$, making relative MAE (`MAE / 0.1`) $> 0.05$ and tripping `break` before ever evaluating $s \ge 1.0$.
+   - *Fix:* Updated `metrics.py` so `R_stable` starts at $s = 1.0$ and sweeps upward ($s \ge 1.0$), cleanly measuring the upper polynomial blow-up cliff while still logging full $s = 0.1, 0.5$ metrics in `ood`.
+
+8. **8× RTX 5070 Throughput Fix (Windows WDDM Kernel-Launch Bottleneck):**
+   - *Observation:* `main_polysort_shared_n8_s42` at `batch_size=512` took `~10.5s/epoch` despite converging to `val_mae = 0.03776` by epoch 8 (99% GPU idle due to ~150 tiny CUDA kernel launches $\times$ 391 batches/epoch under Windows WDDM).
+   - *Fix:* Switched compact structured networks (`PolySortNet`, `PolyPairwiseRank`, `DiffSort`) to `batch_size=4096, lr=8e-3, epochs=50` (~49 batches/epoch, ~8× faster) and dense networks to `batch_size=2048, lr=2e-3, epochs=60`, while retaining `batch_size=512 vs 2048 vs 4096` explicitly in the Stage 4E sensitivity sweep to verify invariance.
+
+

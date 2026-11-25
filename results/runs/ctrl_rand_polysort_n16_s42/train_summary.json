@@ -1,0 +1,13 @@
+{
+  "run_id": "ctrl_rand_polysort_n16_s42",
+  "model_name": "polysort_shared",
+  "n": 16,
+  "seed": 42,
+  "n_params": 3,
+  "epochs_completed": 0,
+  "best_val_mae": 0.3260049819946289,
+  "best_val_mono_rate": 0.7908999919891357,
+  "best_val_pair_acc": 0.9970758557319641,
+  "diverged": false,
+  "train_seconds": 0.08348920000025828
+}

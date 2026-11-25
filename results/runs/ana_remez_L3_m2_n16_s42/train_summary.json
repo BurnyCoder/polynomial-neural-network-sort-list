@@ -1,0 +1,13 @@
+{
+  "run_id": "ana_remez_L3_m2_n16_s42",
+  "model_name": "analytical_remez",
+  "n": 16,
+  "seed": 42,
+  "n_params": 0,
+  "epochs_completed": 0,
+  "best_val_mae": Infinity,
+  "best_val_mono_rate": 0.0,
+  "best_val_pair_acc": 0.0,
+  "diverged": true,
+  "train_seconds": 0.10209800000120595
+}

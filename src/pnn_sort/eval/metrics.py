@@ -225,9 +225,11 @@ def evaluate_model_full(
                 "y_pred": po[:8].detach().cpu().numpy().tolist(),
             }
 
-    # Empirical Scale Stability Radius R_stable: largest s with relative MAE (MAE / s) < 0.05
+    # Empirical Upper Scale Stability Radius R_stable: largest s >= 1.0 with relative MAE (MAE / s) < 0.05
     r_stable = 0.0
     for s in SCALE_SWEEP_FACTORS:
+        if s < 1.0:
+            continue
         mae_s = ood_results[f"ood_scale_{s:g}"]["mae"]
         if math.isfinite(mae_s) and (mae_s / s) < 0.05:
             r_stable = float(s)
