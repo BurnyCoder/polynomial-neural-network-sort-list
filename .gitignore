@@ -1,0 +1,29 @@
+# Python & environments
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Large checkpoints & temporary artifacts (checkpoints go to Hugging Face)
+checkpoints/
+*.pt
+*.pth
+*.safetensors
+*.bin
+tmp/
+.cache/
+literature_cache/
+
+# OS & editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.log
