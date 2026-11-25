@@ -1,0 +1,13 @@
+{
+  "run_id": "main_polysort_learnedwire_n8_s42",
+  "model_name": "polysort_learned_wire",
+  "n": 8,
+  "seed": 42,
+  "n_params": 466,
+  "epochs_completed": 60,
+  "best_val_mae": 0.09684740751981735,
+  "best_val_mono_rate": 0.9896999597549438,
+  "best_val_pair_acc": 0.9992535710334778,
+  "diverged": false,
+  "train_seconds": 165.46996370000124
+}

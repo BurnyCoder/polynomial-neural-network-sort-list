@@ -1,0 +1,13 @@
+{
+  "run_id": "scale_pinet_n4_s42",
+  "model_name": "pinet_ncp_skip",
+  "n": 4,
+  "seed": 42,
+  "n_params": 199556,
+  "epochs_completed": 60,
+  "best_val_mae": 0.024735022336244583,
+  "best_val_mono_rate": 0.9918999671936035,
+  "best_val_pair_acc": 0.9986000061035156,
+  "diverged": false,
+  "train_seconds": 61.48011410000254
+}

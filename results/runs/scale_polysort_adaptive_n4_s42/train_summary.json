@@ -1,0 +1,13 @@
+{
+  "run_id": "scale_polysort_adaptive_n4_s42",
+  "model_name": "polysort_adaptive",
+  "n": 4,
+  "seed": 42,
+  "n_params": 9,
+  "epochs_completed": 50,
+  "best_val_mae": 0.023496344685554504,
+  "best_val_mono_rate": 0.9881999492645264,
+  "best_val_pair_acc": 0.9977499842643738,
+  "diverged": false,
+  "train_seconds": 38.44245279999814
+}
